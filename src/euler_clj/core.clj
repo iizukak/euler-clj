@@ -2,7 +2,9 @@
   (:require [clojure.math.combinatorics :as combo]))
 
 (defn problem-33 []
-  (let [p (combo/permutations (vec (range 1 10)))
+  "Project Euler problem 33 solution
+  https://projecteuler.net/problem=32"
+  (let [p (combo/permutations (range 1 10))
 
         ; ex: 12 x 483 = 5796
         is-pandigital-2-3-4 (fn [s]
@@ -11,7 +13,7 @@
                 mn (+ (* 1000 (nth s 5)) (* 100 (nth s 6)) (* 10 (nth s 7)) (nth s 8))]
             (if (= (* m n) mn) mn false)))
 
-        ; ex: 12 x 483 = 5796
+        ; ex: 4 x 1963 = 7852
         is-pandigital-1-4-4 (fn [s]
           (let [k  (nth s 0)
                 l  (+ (* 1000 (nth s 1)) (* 100 (nth s 2)) (* 10 (nth s 3)) (nth s 4))
@@ -26,4 +28,21 @@
             (recur (rest p) ans)))
         (apply + (distinct ans)))))) ; answer: 45228
 
+(defn gen-denomi [a]
+  (map #(list % (+ (* 10 %) a)) (range 1 10)))
+
+(defn gen-numera [a]
+  (map #(list % (+ (* 10 a) %)) (range 1 10)))
+
+(def a (gen-denomi 9))
+(def b (gen-numera 9))
+(def c (combo/cartesian-product a b))
+
+(defn filter-34 [k]
+  (= (/ (first (first k))   (second (first k)))
+     (/ (second (first k))  (second (second k)))))
+
+(defn problem-34 []
+  ()
+)
 
