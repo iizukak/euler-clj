@@ -8,9 +8,17 @@
   (reduce *' (range 1 (inc n))))
 
 
+(defn decompose-digits [n]
+  "decompose integer to digits.
+   ex: 321 -> (3 2 1)"
+  (loop [n n, digits ()]
+    (if (== n 0)
+      digits
+      (recur (quot n 10) (cons (rem n 10) digits) ))))
+
+
 ; Problem Solver Implementations
 (defn problem-32 []
-  "Project Euler problem 32 solution"
   (let [p (combo/permutations (range 1 10))
 
         ; ex: 12 x 483 = 5796
@@ -37,12 +45,11 @@
 
 
 (defn problem-33 []
-  "Project Euler problem 33 solution"
   (letfn [(gen-denomi [a]
             (map #(list % (+ (* 10 %) a)) (range 1 10)))
 
           (gen-numera [a]
-           (map #(list % (+ (* 10 a) %)) (range 1 10)))
+            (map #(list % (+ (* 10 a) %)) (range 1 10)))
 
           (filter-33 [k]
             (== (/ (first (first k))   (first (second k)))
@@ -52,3 +59,8 @@
           :let [denomi (gen-denomi x)
                 numera (gen-numera x)]]
           (filter filter-33 (combo/cartesian-product denomi numera))))) ; answer: 100
+
+
+(defn problem-34 []
+  (letfn [(filter-34 [n] (==  (apply + (map fact (decompose-digits n))) n))]
+    (apply + (filter filter-34 (range 10 100000)))))
