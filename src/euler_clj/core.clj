@@ -1,9 +1,8 @@
 (ns euler-clj.core
   (:require [clojure.math.combinatorics :as combo]))
 
-(defn problem-33 []
-  "Project Euler problem 33 solution
-  https://projecteuler.net/problem=32"
+(defn problem-32 []
+  "Project Euler problem 32 solution"
   (let [p (combo/permutations (range 1 10))
 
         ; ex: 12 x 483 = 5796
@@ -28,21 +27,20 @@
             (recur (rest p) ans)))
         (apply + (distinct ans)))))) ; answer: 45228
 
-(defn gen-denomi [a]
-  (map #(list % (+ (* 10 %) a)) (range 1 10)))
+(defn problem-33 []
+  "Project Euler problem 33 solution"
+  (letfn [(gen-denomi [a]
+            (map #(list % (+ (* 10 %) a)) (range 1 10)))
 
-(defn gen-numera [a]
-  (map #(list % (+ (* 10 a) %)) (range 1 10)))
+          (gen-numera [a]
+           (map #(list % (+ (* 10 a) %)) (range 1 10)))
 
-(def a (gen-denomi 9))
-(def b (gen-numera 9))
-(def c (combo/cartesian-product a b))
+          (filter-33 [k]
+            (== (/ (first (first k))   (first (second k)))
+                (/ (second (first k))  (second (second k)))))]
 
-(defn filter-34 [k]
-  (= (/ (first (first k))   (second (first k)))
-     (/ (second (first k))  (second (second k)))))
-
-(defn problem-34 []
-  ()
-)
+    (for [x (range 1 10)
+          :let [denomi (gen-denomi x)
+                numera (gen-numera x)]]
+          (filter filter-33 (combo/cartesian-product denomi numera))))) ; answer: 100
 
