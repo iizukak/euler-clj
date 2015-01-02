@@ -10,7 +10,7 @@
 
 
 (defn decompose-digits [n]
-  "decompose integer to digits.
+  "decompose integer to digits list.
    ex: 321 -> (3 2 1)"
   (loop [n n, digits ()]
     (if (== n 0)
@@ -18,8 +18,18 @@
       (recur (quot n 10) (cons (rem n 10) digits)))))
 
 
+(defn compose-digits [s]
+  "compose digits list to integer.
+   ex: (1 2 3) -> 123"
+  (loop [s (reverse s), coefficient 1, ans 0]
+    (if (seq s)
+      (recur (rest s) (* 10 coefficient) (+ ans (* coefficient (first s))))
+      ans)))
+
+
 (defn generate-primes [n]
   "generate prime numbers under n"
+  ; TODO: This function is so slow
   (loop [candidates (range 3 (inc n) 2), ; even numbers is not prime
          primes ()]
     (if (> (first candidates) (math/sqrt n))
