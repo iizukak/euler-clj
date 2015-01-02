@@ -1,6 +1,14 @@
 (ns euler-clj.core
   (:require [clojure.math.combinatorics :as combo]))
 
+
+; Utility Functions
+(defn fact [n]
+  "Calculate Factorial"
+  (reduce *' (range 1 (inc n))))
+
+
+; Problem Solver Implementations
 (defn problem-32 []
   "Project Euler problem 32 solution"
   (let [p (combo/permutations (range 1 10))
@@ -27,6 +35,7 @@
             (recur (rest p) ans)))
         (apply + (distinct ans)))))) ; answer: 45228
 
+
 (defn problem-33 []
   "Project Euler problem 33 solution"
   (letfn [(gen-denomi [a]
@@ -43,4 +52,3 @@
           :let [denomi (gen-denomi x)
                 numera (gen-numera x)]]
           (filter filter-33 (combo/cartesian-product denomi numera))))) ; answer: 100
-
