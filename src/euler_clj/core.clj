@@ -1,5 +1,6 @@
 (ns euler-clj.core
-  (:require [clojure.math.combinatorics :as combo]))
+  (:require [clojure.math.combinatorics :as combo])
+  (:require [clojure.math.numeric-tower :as math]))
 
 
 ; Utility Functions
@@ -14,7 +15,17 @@
   (loop [n n, digits ()]
     (if (== n 0)
       digits
-      (recur (quot n 10) (cons (rem n 10) digits) ))))
+      (recur (quot n 10) (cons (rem n 10) digits)))))
+
+
+(defn generate-primes [n]
+  "generate prime numbers under n"
+  (loop [candidates (range 3 (inc n) 2), ; even numbers is not prime
+         primes ()]
+    (if (> (first candidates) (math/sqrt n))
+      (sort (cons 2 (concat primes candidates)))
+      (recur (remove #(zero? (mod % (first candidates))) (rest candidates))
+             (cons (first candidates) primes) ))))
 
 
 ; Problem Solver Implementations
@@ -63,4 +74,4 @@
 
 (defn problem-34 []
   (letfn [(filter-34 [n] (==  (apply + (map fact (decompose-digits n))) n))]
-    (apply + (filter filter-34 (range 10 100000)))))
+    (apply + (filter filter-34 (range 10 100000))))) ; answer: 40730
