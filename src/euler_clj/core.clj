@@ -27,6 +27,12 @@
       ans)))
 
 
+(defn count-digits [n]
+  "return digits size of an integer
+   ex: 123 -> 3"
+  (count (decompose-digits n)))
+
+
 (defn generate-primes [n]
   "generate prime numbers under n"
   ; TODO: This function is so slow
@@ -36,6 +42,14 @@
       (sort (cons 2 (concat primes candidates)))
       (recur (remove #(zero? (mod % (first candidates))) (rest candidates))
              (cons (first candidates) primes) ))))
+
+
+(defn lotate-digits [n]
+  "lotate integer digits.
+   ex: 1234 -> 2341"
+  (let [a (reverse (rest (decompose-digits n))),
+        b (first (decompose-digits n))]
+    (compose-digits (reverse  (cons b a)))))
 
 
 ; Problem Solver Implementations
@@ -85,3 +99,20 @@
 (defn problem-34 []
   (letfn [(filter-34 [n] (==  (apply + (map fact (decompose-digits n))) n))]
     (apply + (filter filter-34 (range 10 100000))))) ; answer: 40730
+
+
+
+(defn problem-35 []
+  (let [primes (generate-primes 1000000)
+
+        filter-35 (fn [primes n]
+          (every?
+            #(not= (.indexOf primes %) -1)
+            (take (count-digits n) (iterate lotate-digits n))))
+
+        filter-contain-zero-digits (fn [n]
+          (== (.indexOf (decompose-digits n) 0) -1))]
+
+    (count (filter
+             filter-contain-zero-digits
+             (filter (partial filter-35 primes) primes)))))
