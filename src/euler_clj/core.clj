@@ -109,6 +109,78 @@
          (search-diagonal-2 array-11)))) ; answer: 70600674
 
 
+(defn problem-15 []
+  (let [n 20]
+    (/ (fact (*' 2 n)) (*' (fact n) (fact n)))))
+
+
+(defn problem-17 []
+  (let [digits (combo/cartesian-product (range 10) (range 10) (range 10))
+        first-digit (fn [a1]
+          (cond
+            (== 0 a1) ""
+            (== 1 a1) "onehundred"
+            (== 2 a1) "twohundred"
+            (== 3 a1) "threehundred"
+            (== 4 a1) "fourhundred"
+            (== 5 a1) "fivehundred"
+            (== 6 a1) "sixhundred"
+            (== 7 a1) "sevenhundred"
+            (== 8 a1) "eighthundred"
+            (== 9 a1) "ninehundred"))
+
+        third-digit (fn [a3]
+          (cond
+            (== 0 a3) ""
+            (== 1 a3) "one"
+            (== 2 a3) "two"
+            (== 3 a3) "three"
+            (== 4 a3) "four"
+            (== 5 a3) "five"
+            (== 6 a3) "six"
+            (== 7 a3) "seven"
+            (== 8 a3) "eight"
+            (== 9 a3) "nine"))
+
+        second-digit (fn [a2 a3]
+          (if (== a2 1)
+            (cond
+              (== 0 a3) "ten"
+              (== 1 a3) "eleven"
+              (== 2 a3) "twelve"
+              (== 3 a3) "thirteen"
+              (== 4 a3) "fourteen"
+              (== 5 a3) "fifteen"
+              (== 6 a3) "sixteen"
+              (== 7 a3) "seventeen"
+              (== 8 a3) "eighteen"
+              (== 9 a3) "nineteen")
+            (cond
+              (== 0 a2) (third-digit a3)
+              (== 2 a2) (str "twenty" (third-digit a3))
+              (== 3 a2) (str "thirty" (third-digit a3))
+              (== 4 a2) (str "forty" (third-digit a3))
+              (== 5 a2) (str "fifty"  (third-digit a3))
+              (== 6 a2) (str "sixty"  (third-digit a3))
+              (== 7 a2) (str "seventy" (third-digit a3))
+              (== 8 a2) (str "eighty" (third-digit a3))
+              (== 9 a2) (str "ninety" (third-digit a3)) )))
+
+
+        add-and (fn [a1 a2 a3]
+          (if (and (not= a1 0) (or (not= a2 0) (not= a3 0)))
+              "and"
+              ""))
+
+        compose-letter (fn [digits]
+          (str (first-digit (nth digits 0))
+               (add-and (nth digits 0) (nth digits 1) (nth digits 2))
+               (second-digit (nth digits 1) (nth digits 2))))]
+
+    ; main parts
+    (+ 11 (count (apply str (map compose-letter digits))))))
+
+
 (defn problem-32 []
   (let [p (combo/permutations (range 1 10))
 
