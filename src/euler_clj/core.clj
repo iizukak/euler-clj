@@ -53,6 +53,28 @@
     (compose-digits (reverse  (cons b a)))))
 
 
+(defn find-factors [n]
+  "find factors of n
+   ex: 28 -> (1 2 4 7 14)"
+  (filter #(== (rem n %) 0) (range 1 (inc (quot n 2)))))
+
+
+(defn sum-of-factors [n]
+  "find some of factors of n
+   ex: 28 -> (1 2 4 7 14) -> 28"
+  (apply + (find-factors n)))
+
+(defn find-abundant-number [n]
+  (filter #(> (sum-of-factors %) %) (range 1 n)))
+
+(defn find-absum-under-n [n]
+  (let [abundants (find-abundant-number n)]
+    (apply concat
+      (for [x abundants]
+        (map #(+ x %) (take-while #(< (+ x %) n) abundants))))))
+
+
+
 ; Problem Solver Implementations
 (defn problem-11 []
   (let [array-11
