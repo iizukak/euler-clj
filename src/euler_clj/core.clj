@@ -1,7 +1,8 @@
 (ns euler-clj.core
   (:require [clojure.math.combinatorics :as combo])
-  (:require [clojure.math.numeric-tower :as math]))
-
+  (:require [clojure.math.numeric-tower :as math])
+  (:require [clj-time.core :as t])
+  (:require [clj-time.predicates :as pr]))
 
 ; Utility Functions
 (defn fact [n]
@@ -181,6 +182,13 @@
     (+ 11 (count (apply str (map compose-letter digits))))))
 
 
+
+(defn problem-19 []
+  (let [a (map
+            #(t/date-time (+ 1901 (nth % 0)) (nth % 1) 1)
+            (combo/cartesian-product (range 100) (range 1 13) ))] ; 1901/1/1, 1901/2/1,...,2000/12/1
+    (count (filter pr/sunday? a))))
+
 (defn problem-32 []
   (let [p (combo/permutations (range 1 10))
 
@@ -227,7 +235,6 @@
 (defn problem-34 []
   (letfn [(filter-34 [n] (==  (apply + (map fact (decompose-digits n))) n))]
     (apply + (filter filter-34 (range 10 100000))))) ; answer: 4 730
-
 
 
 (defn problem-35 []
