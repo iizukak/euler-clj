@@ -74,6 +74,23 @@
         (map #(+ x %) (take-while #(< (+ x %) n) abundants))))))
 
 
+(defn find-int [l n]
+  (loop [l l]
+    (cond (or (not (seq l)) (> (first l) n)) true
+          (== (first l) n) false
+          :else (recur (rest l)))))
+
+
+;(def n 28123)
+(def n 1000)
+(def a (find-abundant-number n))
+(def cp (combo/cartesian-product a a))
+(def sumcp (map #(+ (nth % 0) (nth % 1)) cp ))
+(def sortedcp (sort sumcp))
+
+(defn problem-23 []
+  (count (filter (partial find-int sortedcp) (range 28123))))
+
 
 ; Problem Solver Implementations
 (defn problem-11 []
