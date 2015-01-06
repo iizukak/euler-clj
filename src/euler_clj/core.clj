@@ -64,32 +64,9 @@
    ex: 28 -> (1 2 4 7 14) -> 28"
   (apply + (find-factors n)))
 
-(defn find-abundant-number [n]
-  (filter #(> (sum-of-factors %) %) (range 1 n)))
 
-(defn find-absum-under-n [n]
-  (let [abundants (find-abundant-number n)]
-    (apply concat
-      (for [x abundants]
-        (map #(+ x %) (take-while #(< (+ x %) n) abundants))))))
-
-
-(defn find-int [l n]
-  (loop [l l]
-    (cond (or (not (seq l)) (> (first l) n)) true
-          (== (first l) n) false
-          :else (recur (rest l)))))
-
-
-;(def n 28123)
-(def n 1000)
-(def a (find-abundant-number n))
-(def cp (combo/cartesian-product a a))
-(def sumcp (map #(+ (nth % 0) (nth % 1)) cp ))
-(def sortedcp (sort sumcp))
-
-(defn problem-23 []
-  (count (filter (partial find-int sortedcp) (range 28123))))
+(defn is-abundant-number [n]
+  (> (sum-of-factors n) n))
 
 
 ; Problem Solver Implementations
@@ -227,6 +204,24 @@
             #(t/date-time (+ 1901 (nth % 0)) (nth % 1) 1)
             (combo/cartesian-product (range 100) (range 1 13) ))] ; 1901/1/1, 1901/2/1,...,2000/12/1
     (count (filter pr/sunday? a))))
+
+
+(defn problem-23 []
+  (let [N 28123
+        abundants (filter is-abundant-number (range 1 (+ N 1)))]
+    (->> (for [x abundants] (map #(+ x %) abundants))
+         (map (fn [ns]
+                (take-while (fn [n] (<= n N)) ns)))
+         (map set)
+         (reduce clojure.set/union)
+         (reduce +)
+         (- (/ (* N (+ N 1)) 2))))) ; answer: 4179871
+
+
+(defn problem-29 []
+  (let [M (range 2 101)]
+    (count (distinct (apply concat (for [n M] (map #(math/expt n %) M)))))))
+
 
 (defn problem-32 []
   (let [p (combo/permutations (range 1 10))
