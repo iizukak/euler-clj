@@ -65,8 +65,12 @@
   (apply + (find-factors n)))
 
 
-(defn is-abundant-number [n]
+(defn abundant? [n]
   (> (sum-of-factors n) n))
+
+
+(defn palindrome? [s]
+  (= s (apply str (reverse s))))
 
 
 ; Problem Solver Implementations
@@ -208,7 +212,7 @@
 
 (defn problem-23 []
   (let [N 28123
-        abundants (filter is-abundant-number (range 1 (+ N 1)))]
+        abundants (filter abundant? (range 1 (+ N 1)))]
     (->> (for [x abundants] (map #(+ x %) abundants))
          (map (fn [ns]
                 (take-while (fn [n] (<= n N)) ns)))
