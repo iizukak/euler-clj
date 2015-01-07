@@ -223,6 +223,12 @@
     (count (distinct (apply concat (for [n M] (map #(math/expt n %) M)))))))
 
 
+(defn problem-30 []
+   (let [L (range 2 354300)
+         expt-5 #(math/expt % 5)]
+      (apply + (filter #(== % (apply +  (map expt-5  (decompose-digits %)) )) L))))
+
+
 (defn problem-32 []
   (let [p (combo/permutations (range 1 10))
 
