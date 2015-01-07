@@ -295,3 +295,40 @@
     (count (filter
              filter-contain-zero-digits
              (filter (partial filter-35 primes) primes))))) ; answer: 55
+
+(defn problem-36 []
+  (letfn [
+    (palindrome-1 []
+      (range 1 10))
+
+    (palindrome-2 []
+      (map #(Integer/parseInt %) (for [n (range 1 10)]
+        (str n n))))
+
+    (palindrome-3 []
+      (apply concat (for [m (range 10)]
+        (for [n (range 1 10)]
+          (compose-digits (concat (decompose-digits n) (list m) (reverse (decompose-digits n))))))))
+
+    (palindrome-4 []
+      (for [n (range 10 100)]
+        (compose-digits (concat (decompose-digits n) (reverse (decompose-digits n))))))
+
+    (palindrome-5 []
+      (apply concat (for [m (range 10)]
+        (for [n (range 10 100)]
+          (compose-digits (concat (decompose-digits n) (list m) (reverse (decompose-digits n))))))))
+
+    (palindrome-6 []
+      (for [n (range 100 1000)]
+        (compose-digits (concat (decompose-digits n) (reverse (decompose-digits n))))))
+
+    (filter-36 [s]
+      (map #(Integer/parseInt % 2) (filter palindrome? (map #(Integer/toString % 2) (s)))))]
+
+      (apply + (concat (filter-36 palindrome-1)
+              (filter-36 palindrome-2)
+              (filter-36 palindrome-3)
+              (filter-36 palindrome-4)
+              (filter-36 palindrome-5)
+              (filter-36 palindrome-6)))))
