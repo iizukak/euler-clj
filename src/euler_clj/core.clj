@@ -73,6 +73,30 @@
   (= s (apply str (reverse s))))
 
 
+(defn parts-37 [n]
+  (for [i (range 1 (inc (count (str n))))]
+     (compose-digits (take i (decompose-digits n))  )))
+
+(defn parts-37-r [n]
+  (for [i (range 1 (inc (count (str n))))]
+     (compose-digits (reverse (take i (reverse (decompose-digits n)))  ))))
+
+(defn prime? [n primes]
+  (loop [primes primes]
+    (cond
+      (or (not (seq primes)) (> (first primes) n)) false
+      (==  (first primes) n) true
+      :else (recur (rest primes)))))
+
+(defn filter-37 [n primes]
+  (and (every? #(prime? % primes) (parts-37 n))
+       (every? #(prime? % primes) (parts-37-r n))))
+
+(defn problem-37 []
+  (let [primes (generate-primes 1000000)]
+    (reduce + (drop 4 (filter #(filter-37 % primes) primes))))) ; 748317
+
+
 ; Problem Solver Implementations
 (defn problem-11 []
   (let [array-11
@@ -295,6 +319,7 @@
     (count (filter
              filter-contain-zero-digits
              (filter (partial filter-35 primes) primes))))) ; answer: 55
+
 
 (defn problem-36 []
   (letfn [
