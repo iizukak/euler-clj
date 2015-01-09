@@ -73,6 +73,21 @@
   (= s (apply str (reverse s))))
 
 
+(defn pandigital? [n]
+  (== (count (decompose-digits n))
+      (count (distinct (decompose-digits n)))))
+
+(defn gen-38 [n]
+  (loop [out (), i 1]
+    (cond 
+      (and (== (count out) 9) (== (count (distinct out)) 9) (== (.indexOf out 0) -1)) (compose-digits out)
+      (>= (count out) 9) 0
+      :else (recur (concat out (decompose-digits (* i n))) (inc i) ))))
+
+(defn problem-38 []
+  (apply max (map gen-38 (range 1 10000))))
+
+
 (defn parts-37 [n]
   (for [i (range 1 (inc (count (str n))))]
      (compose-digits (take i (decompose-digits n))  )))
