@@ -77,40 +77,6 @@
   (== (count (decompose-digits n))
       (count (distinct (decompose-digits n)))))
 
-(defn gen-38 [n]
-  (loop [out (), i 1]
-    (cond 
-      (and (== (count out) 9) (== (count (distinct out)) 9) (== (.indexOf out 0) -1)) (compose-digits out)
-      (>= (count out) 9) 0
-      :else (recur (concat out (decompose-digits (* i n))) (inc i) ))))
-
-(defn problem-38 []
-  (apply max (map gen-38 (range 1 10000))))
-
-
-(defn parts-37 [n]
-  (for [i (range 1 (inc (count (str n))))]
-     (compose-digits (take i (decompose-digits n))  )))
-
-(defn parts-37-r [n]
-  (for [i (range 1 (inc (count (str n))))]
-     (compose-digits (reverse (take i (reverse (decompose-digits n)))  ))))
-
-(defn prime? [n primes]
-  (loop [primes primes]
-    (cond
-      (or (not (seq primes)) (> (first primes) n)) false
-      (==  (first primes) n) true
-      :else (recur (rest primes)))))
-
-(defn filter-37 [n primes]
-  (and (every? #(prime? % primes) (parts-37 n))
-       (every? #(prime? % primes) (parts-37-r n))))
-
-(defn problem-37 []
-  (let [primes (generate-primes 1000000)]
-    (reduce + (drop 4 (filter #(filter-37 % primes) primes))))) ; 748317
-
 
 ; Problem Solver Implementations
 (defn problem-11 []
@@ -372,3 +338,39 @@
               (filter-36 palindrome-4)
               (filter-36 palindrome-5)
               (filter-36 palindrome-6)))))
+
+
+(defn problem-37 []
+  (let [primes (generate-primes 1000000)
+        parts-37 (fn [n]
+          (for [i (range 1 (inc (count (str n))))]
+             (compose-digits (take i (decompose-digits n))  )))
+
+        parts-37-r (fn [n]
+          (for [i (range 1 (inc (count (str n))))]
+             (compose-digits (reverse (take i (reverse (decompose-digits n)))  ))))
+
+        prime? (fn [n primes]
+          (loop [primes primes]
+            (cond
+              (or (not (seq primes)) (> (first primes) n)) false
+              (==  (first primes) n) true
+              :else (recur (rest primes)))))
+
+        filter-37 (fn [n primes]
+          (and (every? #(prime? % primes) (parts-37 n))
+               (every? #(prime? % primes) (parts-37-r n))))]
+
+    (reduce + (drop 4 (filter #(filter-37 % primes) primes))))) ; 748317
+
+
+(defn problem-38 []
+  (let gen-38 (fn [n]
+    (loop [out (), i 1]
+      (cond
+        (and (== (count out) 9) (== (count (distinct out)) 9) (== (.indexOf out 0) -1)) (compose-digits out)
+        (>= (count out) 9) 0
+        :else (recur (concat out (decompose-digits (* i n))) (inc i) )))))
+    (apply max (map gen-38 (range 1 10000))))
+
+
