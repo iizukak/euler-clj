@@ -78,6 +78,17 @@
       (count (distinct (decompose-digits n)))))
 
 
+(defn right-triangle? [a b c]
+  ; c: hypotenuse
+  (== (+ (* a a) (* b b)) (* c c)))
+
+
+(defn find-rt [n]
+  (for [a (range 1 (quot n 2)), b (range 1 (quot n 2))
+    :when (and (<= a b) (right-triangle? a b (- n a b)))]
+    (list a b)))
+
+
 ; Problem Solver Implementations
 (defn problem-11 []
   (let [array-11
@@ -365,12 +376,12 @@
 
 
 (defn problem-38 []
-  (let gen-38 (fn [n]
+  (let [gen-38 (fn [n]
     (loop [out (), i 1]
       (cond
         (and (== (count out) 9) (== (count (distinct out)) 9) (== (.indexOf out 0) -1)) (compose-digits out)
         (>= (count out) 9) 0
-        :else (recur (concat out (decompose-digits (* i n))) (inc i) )))))
-    (apply max (map gen-38 (range 1 10000))))
+        :else (recur (concat out (decompose-digits (* i n))) (inc i) ))))]
+    (apply max (map gen-38 (range 1 10000)))))
 
 
