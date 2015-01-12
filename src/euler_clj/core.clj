@@ -109,6 +109,12 @@
       out
       (recur (str out (str i)) (inc i)))))
 
+(defn gen-40''' [n]
+  (reduce #(str %1 (str %2)) "" (range 1 (inc n))))
+
+(defn problem-40 []
+  (let [s (reduce #(str %1 (str %2)) "" (range 1 (inc 19000)))]
+    ()))
 
 
 ; Problem Solver Implementations
