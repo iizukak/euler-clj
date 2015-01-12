@@ -83,10 +83,32 @@
   (== (+ (* a a) (* b b)) (* c c)))
 
 
-(defn find-rt [n]
+(defn find-rt [n] ; this function for  problem 39
   (for [a (range 1 (quot n 2)), b (range 1 (quot n 2))
     :when (and (<= a b) (right-triangle? a b (- n a b)))]
     (list a b)))
+
+
+(defn gen-40 [n]
+  (loop [out [] i 1]
+    (if (> i n)
+      out
+      (recur (concat out (decompose-digits i)) (inc i)))))
+
+
+(defn gen-40' [n]
+  (loop [cnt 0 i 1]
+    (if (>= cnt n)
+      (print cnt (decompose-digits (dec i)))
+      (recur  (+ cnt (count (decompose-digits i))) (inc i)))))
+
+
+(defn gen-40'' [n]
+  (loop [out "" i 1]
+    (if (> i n)
+      out
+      (recur (str out (str i)) (inc i)))))
+
 
 
 ; Problem Solver Implementations
