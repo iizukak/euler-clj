@@ -89,34 +89,6 @@
     (list a b)))
 
 
-(defn gen-40 [n]
-  (loop [out [] i 1]
-    (if (> i n)
-      out
-      (recur (concat out (decompose-digits i)) (inc i)))))
-
-
-(defn gen-40' [n]
-  (loop [cnt 0 i 1]
-    (if (>= cnt n)
-      (print cnt (decompose-digits (dec i)))
-      (recur  (+ cnt (count (decompose-digits i))) (inc i)))))
-
-
-(defn gen-40'' [n]
-  (loop [out "" i 1]
-    (if (> i n)
-      out
-      (recur (str out (str i)) (inc i)))))
-
-(defn gen-40''' [n]
-  (reduce #(str %1 (str %2)) "" (range 1 (inc n))))
-
-(defn problem-40 []
-  (let [s (reduce #(str %1 (str %2)) "" (range 1 (inc 19000)))]
-    ()))
-
-
 ; Problem Solver Implementations
 (defn problem-11 []
   (let [array-11
@@ -412,4 +384,21 @@
         :else (recur (concat out (decompose-digits (* i n))) (inc i) ))))]
     (apply max (map gen-38 (range 1 10000)))))
 
+
+(defn problem-40 []
+  (let [gen-40'' (fn [n]
+          (loop [out "" i 1]
+            (if (> i n)
+              out
+              (recur (str out (str i)) (inc i)))))
+
+        s (gen-40'' 190000)]
+
+    (* (Integer/parseInt (str (nth s 0)))
+       (Integer/parseInt (str (nth s 9)))
+       (Integer/parseInt (str (nth s 99)))
+       (Integer/parseInt (str (nth s 999)))
+       (Integer/parseInt (str (nth s 9999)))
+       (Integer/parseInt (str (nth s 99999)))
+       (Integer/parseInt (str (nth s 999999))))))
 
