@@ -402,3 +402,5 @@
        (Integer/parseInt (str (nth s 99999)))
        (Integer/parseInt (str (nth s 999999))))))
 
+; (def p (combo/permutations (range 1 8)))
+; (def pp (filter #(pandigital?  (compose-digits %) )    p))
