@@ -2,7 +2,8 @@
   (:require [clojure.math.combinatorics :as combo])
   (:require [clojure.math.numeric-tower :as math])
   (:require [clj-time.core :as t])
-  (:require [clj-time.predicates :as pr]))
+  (:require [clj-time.predicates :as pr])
+  (:require [com.hypirion.primes :as prime]))
 
 ; Utility Functions
 (defn fact [n]
@@ -402,5 +403,7 @@
        (Integer/parseInt (str (nth s 99999)))
        (Integer/parseInt (str (nth s 999999))))))
 
-; (def p (combo/permutations (range 1 8)))
-; (def pp (filter #(pandigital?  (compose-digits %) )    p))
+
+(defn problem-41 []
+  (let [candidates (map compose-digits (combo/permutations (range 1 8)))]
+    (last (filter #(and (pandigital? %) (prime/prime? %)) candidates))))
