@@ -407,3 +407,6 @@
 (defn problem-41 []
   (let [candidates (map compose-digits (combo/permutations (range 1 8)))]
     (last (filter #(and (pandigital? %) (prime/prime? %)) candidates))))
+
+; (apply + (map #(- (int %) 64) (seq (char-array "SKY"))))
+; (defn triangle [n] (quot (* n (inc n))  2))
