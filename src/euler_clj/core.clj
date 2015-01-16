@@ -5,6 +5,8 @@
   (:require [clj-time.predicates :as pr])
   (:require [com.hypirion.primes :as prime]))
 
+(load "problem-42-data")
+
 ; Utility Functions
 (defn fact [n]
   "Calculate Factorial"
@@ -408,5 +410,9 @@
   (let [candidates (map compose-digits (combo/permutations (range 1 8)))]
     (last (filter #(and (pandigital? %) (prime/prime? %)) candidates))))
 
-; (apply + (map #(- (int %) 64) (seq (char-array "SKY"))))
-; (defn triangle [n] (quot (* n (inc n))  2))
+
+(defn problem-42 []
+  (let [triangle (map #(quot (* % (inc %)) 2) (range))
+        triangle? (fn [n] (== (last (take-while (partial >= n) triangle)) n))
+        word-value (fn [s] (apply + (map #(- (int %) 64) (seq (char-array s)))))]
+    (count (filter #(triangle? (word-value %)) problem-42-data))))
