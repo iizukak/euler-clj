@@ -416,3 +416,24 @@
         triangle? (fn [n] (== (last (take-while (partial >= n) triangle)) n))
         word-value (fn [s] (apply + (map #(- (int %) 64) (seq (char-array s)))))]
     (count (filter #(triangle? (word-value %)) problem-42-data))))
+
+; (compose-digits (take 3 (drop 1 (decompose-digits 1406357289))))
+; (drop-while #(< % 100)  (take-while #(< % 1000) (map #(* 17 %)  (range))))
+
+
+(defn gen-43 [n]
+  (->> (range)
+       (map #(* n %))
+       (drop-while #(< % 100))
+       (take-while #(< % 1000))
+       (map #(decompose-digits %))))
+
+(def list-43
+  (combo/cartesian-product
+    (gen-43 2)
+    (gen-43 3)
+    (gen-43 5)
+    (gen-43 7)
+    (gen-43 11)
+    (gen-43 13)
+    (gen-43 17)))
