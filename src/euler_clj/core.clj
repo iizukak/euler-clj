@@ -417,22 +417,36 @@
         word-value (fn [s] (apply + (map #(- (int %) 64) (seq (char-array s)))))]
     (count (filter #(triangle? (word-value %)) problem-42-data))))
 
-; (compose-digits (take 3 (drop 1 (decompose-digits 1406357289))))
-; (drop-while #(< % 100)  (take-while #(< % 1000) (map #(* 17 %)  (range))))
 
+(defn problem-43 []
+  (let [gen-43
+          (fn [n]
+            (->> (range)
+                 (map #(* n %))
+                 (drop-while #(< % 100))
+                 (take-while #(< % 1000))
+                 (filter pandigital?)
+                 (map #(decompose-digits %))))
 
-(defn gen-43 [n]
-  (->> (range)
-       (map #(* n %))
-       (drop-while #(< % 100))
-       (take-while #(< % 1000))
-       (filter pandigital?)
-       (map #(decompose-digits %))))
+        cons-43
+          (fn [modulo l]
+            (for [e l
+                  n (range 10)
+              :let [target (compose-digits (cons n (take 2 e)))]
+              :when (and (==  (rem target modulo)  0)
+                         (pandigital? target))]
+              (cons n e)))
 
-(defn cons-43 [l modulo]
-  (for [e l
-        n (range 10)
-    :let [target (compose-digits (cons n (take 2 e)))]
-    :when (and (==  (rem target modulo)  0)
-               (pandigital? target))]
-    (cons n e)))
+        list-43
+          (->> (gen-43 17)
+               (cons-43 13)
+               (cons-43 11)
+               (cons-43 7)
+               (cons-43 5)
+               (cons-43 3)
+               (cons-43 2))]
+    (reduce + (for [l list-43,
+          n (range 10)
+          :let [ans (compose-digits (cons n l))]
+          :when (and (> ans 999999999) (pandigital? ans))]
+          ans)))) ; Elapsed time: 30.846896 msecs 16695334890
