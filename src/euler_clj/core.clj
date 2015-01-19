@@ -426,14 +426,13 @@
        (map #(* n %))
        (drop-while #(< % 100))
        (take-while #(< % 1000))
+       (filter pandigital?)
        (map #(decompose-digits %))))
 
-(def list-43
-  (combo/cartesian-product
-    (gen-43 2)
-    (gen-43 3)
-    (gen-43 5)
-    (gen-43 7)
-    (gen-43 11)
-    (gen-43 13)
-    (gen-43 17)))
+(defn cons-43 [l modulo]
+  (for [e l
+        n (range 10)
+    :let [target (compose-digits (cons n (take 2 e)))]
+    :when (and (==  (rem target modulo)  0)
+               (pandigital? target))]
+    (cons n e)))
