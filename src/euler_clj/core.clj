@@ -92,6 +92,22 @@
     (list a b)))
 
 
+; test n is pentagonal number
+(defn pentagonal? [n]
+  (integer? (/ (inc (math/sqrt (inc (* 24 n)))) 6)))
+
+(def pentagonals
+  (rest (map #(quot (* % (dec (* 3 %))) 2)  (range))))
+
+
+(defn problem-44 []
+  (loop [target '()
+         l pentagonals]
+    (if (some #(and (pentagonal? (- (first l) %)) (pentagonal? (+ (first l) %))) target)
+      (first target)
+      (recur (cons (first l) target) (rest l)))))
+
+
 ; Problem Solver Implementations
 (defn problem-11 []
   (let [array-11
