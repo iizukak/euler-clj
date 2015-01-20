@@ -100,14 +100,6 @@
   (rest (map #(quot (* % (dec (* 3 %))) 2)  (range))))
 
 
-(defn problem-44 []
-  (loop [target '()
-         l pentagonals]
-    (if (some #(and (pentagonal? (- (first l) %)) (pentagonal? (+ (first l) %))) target)
-      (first target)
-      (recur (cons (first l) target) (rest l)))))
-
-
 ; Problem Solver Implementations
 (defn problem-11 []
   (let [array-11
@@ -466,3 +458,12 @@
           :let [ans (compose-digits (cons n l))]
           :when (and (> ans 999999999) (pandigital? ans))]
           ans)))) ; Elapsed time: 30.846896 msecs 16695334890
+
+
+(defn problem-44 []
+  (loop [target '()
+         l pentagonals]
+    (let [candidates (filter #(and (pentagonal? (- (first l) %)) (pentagonal? (+ (first l) %))) target) ]
+      (if (> (count candidates) 0)
+        (- (first l) (first candidates))
+        (recur (cons (first l) target) (rest l))))))
