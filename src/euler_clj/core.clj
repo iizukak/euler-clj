@@ -97,7 +97,15 @@
   (integer? (/ (inc (math/sqrt (inc (* 24 n)))) 6)))
 
 (def pentagonals
-  (rest (map #(quot (* % (dec (* 3 %))) 2)  (range))))
+  (map #(quot (* % (dec (* 3 %))) 2)  (range)))
+
+
+(def triangulars
+  (map #(quot (* % (inc %)) 2)  (range)))
+
+
+(def hexagonals
+  (map #(* % (dec (* 2 %)))  (range)))
 
 
 ; Problem Solver Implementations
@@ -467,3 +475,7 @@
       (if (> (count candidates) 0)
         (- (first l) (first candidates))
         (recur (cons (first l) target) (rest l))))))
+
+
+(defn problem-45 []
+  (last (filter pentagonal? (take 1000000 hexagonals))))
