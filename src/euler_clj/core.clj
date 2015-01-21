@@ -479,3 +479,21 @@
 
 (defn problem-45 []
   (last (filter pentagonal? (take 1000000 hexagonals))))
+
+(def double-pow
+  (map #(* 2 (* % %)) (range)))
+
+
+
+(def primes (generate-primes 6000))
+(def l (take-while #(< % 6000) double-pow))
+(def ll (combo/cartesian-product l primes))
+(def lll (sort (map #(apply + %) ll)))
+(def llll (distinct lll))
+(def lllll (filter odd? llll))
+
+(defn problem-46 []
+  (loop [cur lllll]
+    (if (== -2 (- (first cur) (nth cur 1)))
+      (recur (rest cur))
+      (nth cur 1))))
