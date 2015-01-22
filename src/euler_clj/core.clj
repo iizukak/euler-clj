@@ -72,6 +72,14 @@
   (> (sum-of-factors n) n))
 
 
+(defn prime-factors [n]
+  ; find prime factors of n
+  ; THIS IS NOT INTEGER FACTORIZATION ALGORITHM
+  ; ex: (prime-factors 12341) -> (7 41 43)
+  (let [divisors (take-while #(>= (quot n 2) %) (prime/primes))]
+    (filter #(== 0 (rem n %)) divisors)))
+
+
 (defn palindrome? [s]
   (= s (apply str (reverse s))))
 
@@ -499,3 +507,11 @@
       (if (== -2 (- (first cur) (nth cur 1)))
         (recur (rest cur))
         (- (nth cur 1) 2)))))
+
+
+(defn problem-47 [] ; This function is so slow... take about 5min
+  (let [candidates (filter #(== 4 (count (prime-factors %))) (range))]
+    (loop [l candidates]
+      (if (== 3 (- (nth l 3) (first l)))
+        (take 4 l)
+        (recur (rest l))))))
