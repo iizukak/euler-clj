@@ -518,3 +518,6 @@
 
 (defn problem-48 []
   (- (reduce + (take 1001 (map #(math/expt % %) (range)))) 1))
+
+(def pandigital-primes
+  (filter pandigital? (take-while #(> 10000 %) (drop-while #(> 1000 %) (prime/primes)))))
