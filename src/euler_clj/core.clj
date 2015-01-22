@@ -515,3 +515,6 @@
       (if (== 3 (- (nth l 3) (first l)))
         (take 4 l)
         (recur (rest l))))))
+
+(defn problem-48 []
+  (- (reduce + (take 1001 (map #(math/expt % %) (range)))) 1))
