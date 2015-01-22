@@ -484,16 +484,18 @@
   (map #(* 2 (* % %)) (range)))
 
 
-
-(def primes (generate-primes 6000))
-(def l (take-while #(< % 6000) double-pow))
-(def ll (combo/cartesian-product l primes))
-(def lll (sort (map #(apply + %) ll)))
-(def llll (distinct lll))
-(def lllll (filter odd? llll))
-
 (defn problem-46 []
-  (loop [cur lllll]
-    (if (== -2 (- (first cur) (nth cur 1)))
-      (recur (rest cur))
-      (nth cur 1))))
+  (let [primes (generate-primes 6000)
+        l (take-while #(< % 6000) double-pow)
+        candidates (->> primes
+                        (take-while #(< % 6000))
+                        (combo/cartesian-product l)
+                        (map #(apply + %))
+                        (distinct)
+                        (sort)
+                        (filter odd?))]
+
+    (loop [cur candidates]
+      (if (== -2 (- (first cur) (nth cur 1)))
+        (recur (rest cur))
+        (- (nth cur 1) 2)))))
