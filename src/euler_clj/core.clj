@@ -521,19 +521,19 @@
   (- (reduce + (take 1001 (map #(math/expt % %) (range)))) 1))
 
 
-(def pandigital-primes
-  (filter pandigital? (take-while #(> 10000 %) (drop-while #(> 1000 %) (prime/primes)))))
+(defn problem-49 []
+  (let [pandigital-primes
+          (filter pandigital? (take-while #(> 10000 %) (drop-while #(> 1000 %) (prime/primes))))
 
-(def cp (combo/cartesian-product pandigital-primes pandigital-primes))
-(def candidates
-  (filter #(and 
-             (< (first %) (second %))
-             (not= (first %) (second %)) 
-             (== 4 (count (distinct (concat (decompose-digits (first %)) (decompose-digits (second %)))))))
-             cp))
-
-(def filtered-candidates
-  (filter #(and 
-             (== 4 (count (distinct (concat (decompose-digits (second %)) (decompose-digits (second %)))))))  
-
-candidates))
+        cp (combo/cartesian-product pandigital-primes pandigital-primes)
+        candidates
+          (filter #(and 
+                     (< (first %) (second %))
+                     (not= (first %) (second %)) 
+                     (== 4 (count (distinct (concat (decompose-digits (first %)) (decompose-digits (second %)))))))
+                     cp)]
+    (->> (filter #(and 
+               (pandigital? (+ (second %) (- (second %) (first %))))
+               (== 4 (count (distinct (concat (decompose-digits (second %)) (decompose-digits (+ (second %) (- (second %) (first %))))))))
+               (prime/prime? (+ (second %) (- (second %) (first %))))) candidates)
+        (map #(cons  (+ (second %) (- (second %) (first %))) %)))))
