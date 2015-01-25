@@ -1,9 +1,9 @@
 (ns euler-clj.core
-  (:require [clojure.math.combinatorics :as combo])
-  (:require [clojure.math.numeric-tower :as math])
-  (:require [clj-time.core :as t])
-  (:require [clj-time.predicates :as pr])
-  (:require [com.hypirion.primes :as prime]))
+  (:require [clojure.math.combinatorics :as combo]
+            [clojure.math.numeric-tower :as math]
+            [clj-time.core :as t]
+            [clj-time.predicates :as pr]
+            [com.hypirion.primes :as prime]))
 
 (load "problem-42-data")
 
@@ -488,12 +488,10 @@
 (defn problem-45 []
   (last (filter pentagonal? (take 1000000 hexagonals))))
 
-(def double-pow
-  (map #(* 2 (* % %)) (range)))
-
 
 (defn problem-46 []
-  (let [primes (generate-primes 6000)
+  (let [double-pow ((map #(* 2 (* % %)) (range)))
+        primes (generate-primes 6000)
         l (take-while #(< % 6000) double-pow)
         candidates (->> primes
                         (take-while #(< % 6000))
@@ -523,7 +521,7 @@
 
 (defn problem-49 []
   (let [pandigital-primes
-          (filter pandigital? (take-while #(> 10000 %) (drop-while #(> 1000 %) (prime/primes))))
+          (take-while #(> 10000 %) (drop-while #(> 1000 %) (prime/primes)))
 
         cp (combo/cartesian-product pandigital-primes pandigital-primes)
         candidates
